@@ -64,15 +64,26 @@ function basicMathSchema(op) {
 
 function BasicMathWorksheet({ data, title, answers, showAnswers }) {
   const sym = data.symbol;
+  const word = sym === '+' ? 'addition' : sym === '–' ? 'subtraction' : 'multiplication';
   return (
-    <PageShell title={title} instructions={`Solve each ${sym === '+' ? 'addition' : sym === '–' ? 'subtraction' : 'multiplication'} problem.`}>
-      <div className="ws-equations">
+    <PageShell title={title} instructions={`Solve each ${word} problem. Write your answer on the line below.`}>
+      <div className="ws-vgrid">
         {data.items.map((it, i) => (
-          <div className="ws-eq" key={i}>
-            <span className="ws-eq-num">{i + 1}.</span>
-            <span className="ws-eq-text">{it.left} {sym} {it.right} = </span>
-            <AnswerLine />
-            {showAnswers && <span className="ws-answer-inline">{answers[i]}</span>}
+          <div className="ws-v" key={i}>
+            <span className="ws-v-num">{i + 1}.</span>
+            <div className="ws-v-op">
+              <div className="ws-v-line top">{it.left}</div>
+              <div className="ws-v-line mid">
+                <span className="ws-v-sym">{sym}</span>
+                <span className="ws-v-operand">{it.right}</span>
+              </div>
+              <div className="ws-v-rule"></div>
+              {showAnswers ? (
+                <span className="ws-v-answer ws-v-answer-solved">{answers[i]}</span>
+              ) : (
+                <div className="ws-v-answer-line"></div>
+              )}
+            </div>
           </div>
         ))}
       </div>

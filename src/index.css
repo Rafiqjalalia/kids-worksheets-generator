@@ -249,6 +249,20 @@ footer.app-footer { border-top: 1px solid var(--slate-200); background: #fff; }
 .ws-answer-inline { color:#15803d; font-weight:800; font-size:15px; margin-left:6px; }
 .ws-line { border-bottom:1.5px solid #94a3b8; height:1.5px; }
 
+/* vertical notebook-style arithmetic (like students write in their notebooks) */
+.ws-vgrid { display:grid; grid-template-columns:1fr 1fr; gap:18px 30px; }
+@media (max-width:600px){ .ws-vgrid { grid-template-columns:1fr; } }
+.ws-v { display:flex; align-items:flex-start; gap:10px; }
+.ws-v-num { color:#94a3b8; font-size:13px; width:22px; flex-shrink:0; padding-top:8px; }
+.ws-v-op { display:flex; flex-direction:column; width:74px; min-width:64px; }
+.ws-v-line { text-align:right; font-size:19px; font-weight:700; line-height:1.25; font-family:var(--font-display); }
+.ws-v-line.mid { display:flex; align-items:baseline; justify-content:flex-end; }
+.ws-v-sym { margin-right:6px; font-weight:700; font-size:15px; color:#334155; }
+.ws-v-operand { }
+.ws-v-rule { border-top:2px solid #111; margin-top:2px; }
+.ws-v-answer-line { height:26px; border-bottom:1.5px solid #94a3b8; margin-top:3px; }
+.ws-v-answer { height:26px; line-height:26px; margin-top:3px; text-align:center; font-weight:800; font-size:17px; color:#15803d; }
+
 /* fraction */
 .ws-fraction { display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:0 2px; }
 .ws-frac-num { padding:0 6px; }

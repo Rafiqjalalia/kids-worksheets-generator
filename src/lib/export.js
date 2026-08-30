@@ -53,6 +53,16 @@ const PRINT_CSS = `
   .ws-answerline{border-bottom:1.5px solid #94a3b8;flex:1}
   .ws-answer-inline{color:#15803d;font-weight:800;font-size:15px;margin-left:6px}
   .ws-line{border-bottom:1.5px solid #94a3b8;height:1.5px}
+  .ws-vgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px 30px}
+  .ws-v{display:flex;align-items:flex-start;gap:10px}
+  .ws-v-num{color:#94a3b8;font-size:13px;width:22px;flex-shrink:0;padding-top:8px}
+  .ws-v-op{display:flex;flex-direction:column;width:74px;min-width:64px}
+  .ws-v-line{text-align:right;font-size:19px;font-weight:700;line-height:1.25;font-family:'Fredoka','Inter'}
+  .ws-v-line.mid{display:flex;align-items:baseline;justify-content:flex-end}
+  .ws-v-sym{margin-right:6px;font-weight:700;font-size:15px;color:#334155}
+  .ws-v-rule{border-top:2px solid #111;margin-top:2px}
+  .ws-v-answer-line{height:26px;border-bottom:1.5px solid #94a3b8;margin-top:3px}
+  .ws-v-answer{height:26px;line-height:26px;margin-top:3px;text-align:center;font-weight:800;font-size:17px;color:#15803d}
   .ws-fraction{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px}
   .ws-frac-line{border-top:2px solid #111;width:100%}
   .ws-frac-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
