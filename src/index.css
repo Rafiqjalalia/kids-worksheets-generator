@@ -232,7 +232,7 @@ footer.app-footer { border-top: 1px solid var(--slate-200); background: #fff; }
 .ws-title { font-family: var(--font-display); font-size: 26px; color:#111; margin:0; }
 .ws-subtitle { margin:2px 0 0; color:#475569; font-size:14px; }
 .ws-meta { text-align:right; }
-.ws-name { display:inline-block; border-bottom:1.5px solid #64748b; min-width:130px; padding-bottom:2px; font-size:13px; color:#64748b; }
+.ws-name { display:inline-block; border-bottom:1.5px solid #64748b; min-width:70px; padding-bottom:2px; font-size:13px; color:#64748b; }
 .ws-band { display:flex; gap:40px; font-size:13px; color:#64748b; margin:10px 0 14px; padding:8px 4px; border-top:1px solid #e2e8f0; border-bottom:1px solid #e2e8f0; }
 .ws-band span { display:inline-block; min-width:90px; border-bottom:1px solid #cbd5e1; padding-bottom:2px; }
 .ws-instructions { font-size:14px; color:#334155; margin:4px 0 16px; font-weight:500; }
@@ -250,7 +250,7 @@ footer.app-footer { border-top: 1px solid var(--slate-200); background: #fff; }
 .ws-line { border-bottom:1.5px solid #94a3b8; height:1.5px; }
 
 /* vertical notebook-style arithmetic (like students write in their notebooks) */
-.ws-vgrid { display:grid; grid-template-columns:1fr 1fr; gap:18px 30px; }
+.ws-vgrid { display:grid; grid-template-columns:1fr 1fr; gap:14px 16px; }
 @media (max-width:600px){ .ws-vgrid { grid-template-columns:1fr; } }
 .ws-v { display:flex; align-items:flex-start; gap:10px; }
 .ws-v-num { color:#94a3b8; font-size:13px; width:22px; flex-shrink:0; padding-top:8px; }
@@ -418,7 +418,7 @@ footer.app-footer { border-top: 1px solid var(--slate-200); background: #fff; }
   .preview-page { border:none; padding:0; }
   .ws-page { page-break-after: always; }
   .print-stack .book-page-wrap { border:none; margin:0; padding:0; page-break-after: always; }
-  @page { size: A4; margin: 14mm; }
+  @page { size: A4; margin: 9mm; }
 }
 
 /* preview inside modal (screen) uses portrait sizing hint */

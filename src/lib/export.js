@@ -36,11 +36,11 @@ const PRINT_CSS = `
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{background:#fff}
-  .ws-page{font-family:'Inter',system-ui,sans-serif;color:#111;background:#fff;padding:4mm 0;page-break-after:always}
+  .ws-page{font-family:'Inter',system-ui,sans-serif;color:#111;background:#fff;padding:1mm 0;page-break-after:always}
   .ws-header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:8px}
   .ws-title{font-family:'Fredoka','Inter';font-size:26px;color:#111;margin:0}
   .ws-subtitle{margin:2px 0 0;color:#475569;font-size:14px}
-  .ws-meta{text-align:right}.ws-name{display:inline-block;border-bottom:1.5px solid #64748b;min-width:130px;padding-bottom:2px;font-size:13px;color:#64748b}
+  .ws-meta{text-align:right}.ws-name{display:inline-block;border-bottom:1.5px solid #64748b;min-width:70px;padding-bottom:2px;font-size:13px;color:#64748b}
   .ws-band{display:flex;gap:40px;font-size:13px;color:#64748b;margin:10px 0 14px;padding:8px 4px;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0}
   .ws-band span{display:inline-block;min-width:90px;border-bottom:1px solid #cbd5e1;padding-bottom:2px}
   .ws-instructions{font-size:14px;color:#334155;margin:4px 0 16px;font-weight:500}
@@ -53,7 +53,7 @@ const PRINT_CSS = `
   .ws-answerline{border-bottom:1.5px solid #94a3b8;flex:1}
   .ws-answer-inline{color:#15803d;font-weight:800;font-size:15px;margin-left:6px}
   .ws-line{border-bottom:1.5px solid #94a3b8;height:1.5px}
-  .ws-vgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px 30px}
+  .ws-vgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
   .ws-v{display:flex;align-items:flex-start;gap:10px}
   .ws-v-num{color:#94a3b8;font-size:13px;width:22px;flex-shrink:0;padding-top:8px}
   .ws-v-op{display:flex;flex-direction:column;width:74px;min-width:64px}
@@ -140,5 +140,5 @@ const PRINT_CSS = `
   .ws-hand-line-line.dashed{letter-spacing:4px}
   .ws-grid-draw{display:flex;justify-content:center}
   .ws-dots{display:block;margin:0 auto;max-width:100%}
-  @page{size:A4;margin:14mm}
+  @page{size:A4;margin:9mm}
 `;
