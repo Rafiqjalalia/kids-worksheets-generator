@@ -63,6 +63,8 @@ const PRINT_CSS = `
   .ws-v-rule{border-top:2.5px solid #111;margin-top:2px}
   .ws-v-answer-line{height:30px;border-bottom:2px solid #94a3b8;margin-top:3px}
   .ws-v-answer{height:30px;line-height:30px;margin-top:3px;text-align:center;font-weight:800;font-size:20px;color:#15803d}
+  .ws-section{margin-bottom:4px}
+  .ws-section-title{font-family:'Fredoka','Inter';font-size:16px;font-weight:700;color:#334155;border-bottom:2px solid #cbd5e1;padding-bottom:3px;margin:6px 0 10px}
   .ws-fraction{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px}
   .ws-frac-line{border-top:2px solid #111;width:100%}
   .ws-frac-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}

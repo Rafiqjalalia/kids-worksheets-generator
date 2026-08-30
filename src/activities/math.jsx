@@ -39,35 +39,14 @@ function makeBasicMath(op, symbol) {
         b = randInt(rng, 1, m);
         ans = a * b;
       } else {
-        // addition - honour the "carrying" mode
-        const carryMode = config.carry || 'both';
-        let attempts = 0, hasCarry = false;
-        do {
-          a = randInt(rng, 1, max);
-          b = randInt(rng, 1, max);
-          hasCarry = ((a % 10) + (b % 10)) >= 10;
-          attempts++;
-          if (attempts > 200) break;
-        } while (
-          (carryMode === 'yes' && !hasCarry) ||
-          (carryMode === 'no' && hasCarry)
-        );
-        if (attempts > 200) {
-          if (carryMode === 'yes' && !hasCarry) a += 10;         // force a carry
-          else if (carryMode === 'no' && hasCarry) a -= a % 10;  // clear the units -> no carry
-        }
+        a = randInt(rng, 1, max);
+        b = randInt(rng, 1, max);
         ans = a + b;
       }
       items.push({ left: a, right: b });
       answers.push(ans);
     }
-    return {
-      data: { items, symbol: symbol, carry: op === 'add' ? config.carry : undefined },
-      answers,
-      title: (op === 'add' && ['yes', 'no'].includes(config.carry))
-        ? `Addition (${config.carry === 'yes' ? 'With' : 'Without'} Carrying) Practice`
-        : `${op[0].toUpperCase()}${op.slice(1)} Practice`,
-    };
+    return { data: { items, symbol: symbol }, answers, title: `${op[0].toUpperCase()}${op.slice(1)} Practice` };
   };
   return { generator, configSchema: basicMathSchema(op) };
 }
@@ -125,6 +104,88 @@ function BasicMathWorksheet({ data, title, answers, showAnswers }) {
           </div>
         ))}
       </div>
+    </PageShell>
+  );
+}
+
+// ---------------- Addition (with / without carrying sections) ----------------
+function makeAddition() {
+  const generator = (config) => {
+    const rng = makeRng(config.seed);
+    const total = Number(config.count) || 20;
+    const grade = config.grade;
+    let max;
+    if (grade === 'grade1') max = 10;
+    else if (grade === 'grade2') max = 20;
+    else if (grade === 'grade3') max = 50;
+    else max = 100;
+    const carryMode = config.carry || 'both';
+    const modes = carryMode === 'both' ? ['no', 'yes'] : [carryMode];
+
+    const sections = [];
+    const answers = [];
+    for (let s = 0; s < modes.length; s++) {
+      const mode = modes[s];
+      const n = carryMode === 'both' ? Math.round(total / modes.length) : total;
+      const items = [];
+      for (let i = 0; i < n; i++) {
+        let a, b, hasCarry;
+        let attempts = 0;
+        do {
+          a = randInt(rng, 1, max);
+          b = randInt(rng, 1, a); // keep the bigger number on top
+          hasCarry = ((a % 10) + (b % 10)) >= 10;
+          attempts++;
+          if (attempts > 200) break;
+        } while ((mode === 'yes' && !hasCarry) || (mode === 'no' && hasCarry));
+        if (attempts > 200) {
+          if (mode === 'yes' && !hasCarry) a += 10;
+          else if (mode === 'no' && hasCarry) a -= a % 10;
+          if (a < b) { const t = a; a = b; b = t; }
+        }
+        items.push({ left: a, right: b });
+        answers.push(a + b);
+      }
+      sections.push({
+        label: mode === 'yes' ? 'With Carrying' : 'Without Carrying',
+        items,
+        answers: items.map(it => it.left + it.right),
+      });
+    }
+    return { data: { sections, symbol: '+' }, answers, title: 'Addition Practice' };
+  };
+  return { generator, configSchema: additionSchema() };
+}
+
+function AdditionWorksheet({ data, answers, showAnswers }) {
+  const sym = data.symbol;
+  return (
+    <PageShell title={data.title} instructions="Solve each addition problem. Write your answer on the line below.">
+      {data.sections.map((sec, si) => (
+        <div className="ws-section" key={si}>
+          <div className="ws-section-title">{sec.label}</div>
+          <div className="ws-vgrid">
+            {sec.items.map((it, i) => (
+              <div className="ws-v" key={i}>
+                <span className="ws-v-num">{i + 1}.</span>
+                <div className="ws-v-op">
+                  <div className="ws-v-line top">{it.left}</div>
+                  <div className="ws-v-line mid">
+                    <span className="ws-v-sym">{sym}</span>
+                    <span className="ws-v-operand">{it.right}</span>
+                  </div>
+                  <div className="ws-v-rule"></div>
+                  {showAnswers ? (
+                    <span className="ws-v-answer ws-v-answer-solved">{sec.answers[i]}</span>
+                  ) : (
+                    <div className="ws-v-answer-line"></div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </PageShell>
   );
 }
@@ -332,7 +393,7 @@ function MathCountingWorksheet({ data, answers, showAnswers }) {
 
 // ---------------- Registry export ----------------
 export const mathActivities = {
-  addition: { ...baseConfig('add'), name: 'Addition', icon: 'plus', generator: makeBasicMath('add', '+').generator, configSchema: additionSchema(), render: BasicMathWorksheet },
+  addition: { ...baseConfig('add'), name: 'Addition', icon: 'plus', generator: makeAddition().generator, configSchema: additionSchema(), render: AdditionWorksheet },
   subtraction: { ...baseConfig('sub'), name: 'Subtraction', icon: 'minus', generator: makeBasicMath('sub', '–').generator, configSchema: makeBasicMath('sub', '–').configSchema, render: BasicMathWorksheet, iconSvg: 'minus' },
   multiplication: { ...baseConfig('mul'), name: 'Multiplication', icon: 'x', generator: makeBasicMath('mul', '×').generator, configSchema: makeBasicMath('mul', '×').configSchema, render: BasicMathWorksheet },
   division: { ...baseConfig('div'), name: 'Division', icon: '÷', generator: makeDivision().generator, configSchema: makeDivision().configSchema, render: MathDivisionWorksheet },
