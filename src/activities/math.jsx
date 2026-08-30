@@ -39,14 +39,35 @@ function makeBasicMath(op, symbol) {
         b = randInt(rng, 1, m);
         ans = a * b;
       } else {
-        a = randInt(rng, 1, max);
-        b = randInt(rng, 1, max);
+        // addition - honour the "carrying" mode
+        const carryMode = config.carry || 'both';
+        let attempts = 0, hasCarry = false;
+        do {
+          a = randInt(rng, 1, max);
+          b = randInt(rng, 1, max);
+          hasCarry = ((a % 10) + (b % 10)) >= 10;
+          attempts++;
+          if (attempts > 200) break;
+        } while (
+          (carryMode === 'yes' && !hasCarry) ||
+          (carryMode === 'no' && hasCarry)
+        );
+        if (attempts > 200) {
+          if (carryMode === 'yes' && !hasCarry) a += 10;         // force a carry
+          else if (carryMode === 'no' && hasCarry) a -= a % 10;  // clear the units -> no carry
+        }
         ans = a + b;
       }
       items.push({ left: a, right: b });
       answers.push(ans);
     }
-    return { data: { items, symbol: symbol }, answers, title: `${op[0].toUpperCase()}${op.slice(1)} Practice` };
+    return {
+      data: { items, symbol: symbol, carry: op === 'add' ? config.carry : undefined },
+      answers,
+      title: (op === 'add' && ['yes', 'no'].includes(config.carry))
+        ? `Addition (${config.carry === 'yes' ? 'With' : 'Without'} Carrying) Practice`
+        : `${op[0].toUpperCase()}${op.slice(1)} Practice`,
+    };
   };
   return { generator, configSchema: basicMathSchema(op) };
 }
@@ -58,6 +79,23 @@ function basicMathSchema(op) {
       { value: 'grade1', label: 'Grade 1' }, { value: 'grade2', label: 'Grade 2' },
       { value: 'grade3', label: 'Grade 3' }, { value: 'grade4', label: 'Grade 4+' },
     ]},
+    { key: 'count', label: 'Question count', type: 'range', default: 20, min: 6, max: 40, step: 1 },
+  ];
+}
+
+function additionSchema() {
+  return [
+    { key: 'grade', label: 'Grade level', type: 'select', default: 'grade2', options: [
+      { value: 'grade1', label: 'Grade 1' }, { value: 'grade2', label: 'Grade 2' },
+      { value: 'grade3', label: 'Grade 3' }, { value: 'grade4', label: 'Grade 4+' },
+    ]},
+    {
+      key: 'carry', label: 'Carrying', type: 'select', default: 'both', options: [
+        { value: 'no', label: 'Without carrying' },
+        { value: 'yes', label: 'With carrying' },
+        { value: 'both', label: 'Mixed (with + without carry)' },
+      ],
+    },
     { key: 'count', label: 'Question count', type: 'range', default: 20, min: 6, max: 40, step: 1 },
   ];
 }
@@ -294,7 +332,7 @@ function MathCountingWorksheet({ data, answers, showAnswers }) {
 
 // ---------------- Registry export ----------------
 export const mathActivities = {
-  addition: { ...baseConfig('add'), name: 'Addition', icon: 'plus', generator: makeBasicMath('add', '+').generator, configSchema: makeBasicMath('add', '+').configSchema, render: BasicMathWorksheet },
+  addition: { ...baseConfig('add'), name: 'Addition', icon: 'plus', generator: makeBasicMath('add', '+').generator, configSchema: additionSchema(), render: BasicMathWorksheet },
   subtraction: { ...baseConfig('sub'), name: 'Subtraction', icon: 'minus', generator: makeBasicMath('sub', '–').generator, configSchema: makeBasicMath('sub', '–').configSchema, render: BasicMathWorksheet, iconSvg: 'minus' },
   multiplication: { ...baseConfig('mul'), name: 'Multiplication', icon: 'x', generator: makeBasicMath('mul', '×').generator, configSchema: makeBasicMath('mul', '×').configSchema, render: BasicMathWorksheet },
   division: { ...baseConfig('div'), name: 'Division', icon: '÷', generator: makeDivision().generator, configSchema: makeDivision().configSchema, render: MathDivisionWorksheet },
